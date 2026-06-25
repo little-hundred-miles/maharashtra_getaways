@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=4">
+  <link rel="stylesheet" href="/styles.css?v=8">
 </head>
 <body>
   <header class="site-header">
@@ -42,31 +42,16 @@
         <span class="eyebrow light">Maharashtra's adventure booking marketplace</span>
         <h1>Find your next<br><em>Maharashtra getaway.</em></h1>
         <p>Discover and compare verified adventures across Maharashtra. Book on MahaGetaways; trusted local operators handle every on-ground detail.</p>
-        <form class="search-bar" id="searchForm">
-          <label>
-            <span>Where</span>
-            <select id="destinationFilter" aria-label="Choose destination">
-              <option value="all">All Maharashtra</option>
-              <option value="Sahyadri">Sahyadri</option>
-              <option value="Konkan">Konkan Coast</option>
-            </select>
-          </label>
-          <div class="search-divider"></div>
-          <label>
-            <span>Adventure</span>
-            <select id="categoryFilter" aria-label="Choose activity">
-              <option value="all">Any activity</option>
-              <option value="Trekking">Trekking</option>
-              <option value="Camping">Camping</option>
-              <option value="Water sports">Water sports</option>
-              <option value="Rock adventure">Rock adventure</option>
-            </select>
-          </label>
-          <button type="submit" aria-label="Search adventures">
-            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
-            Explore
-          </button>
-        </form>
+        <div class="hero-filters" aria-label="Filter adventures by activity">
+          <span>Explore by activity</span>
+          <div class="filter-pills filter-pills--hero">
+            <button class="active" data-filter="all">All adventures</button>
+            <button data-filter="Trekking">Trekking</button>
+            <button data-filter="Camping">Camping</button>
+            <button data-filter="Water sports">Water sports</button>
+            <button data-filter="Rock adventure">Rock & rappel</button>
+          </div>
+        </div>
         <div class="trust-row">
           <span><b>Verified</b> local operators</span>
           <i></i>
@@ -133,6 +118,44 @@
       </div>
     </section>
 
+    <section class="section reviews-section" id="traveller-reviews">
+      <div class="reviews-summary">
+        <span class="eyebrow">Verified experiences</span>
+        <h2>Loved by travellers.</h2>
+        <div class="rating-lockup">
+          <strong>4.9</strong>
+          <div><span>★★★★★</span><p>Average rating from verified bookings</p></div>
+        </div>
+        <ul class="review-trust-list">
+          <li>Verified local operators</li>
+          <li>Transparent pricing & inclusions</li>
+          <li>Clear operator handoff</li>
+        </ul>
+      </div>
+      <div class="testimonial-grid" aria-label="Demo traveller testimonials">
+        <article class="testimonial-card">
+          <div class="testimonial-top"><span>★★★★★</span><small>Verified Booking</small></div>
+          <blockquote>“Booking felt simple and transparent. We knew what was included, who our operator was, and what would happen after payment.”</blockquote>
+          <footer><div class="traveller-avatar">PS</div><p><b>Priya S.</b><span>Mumbai · Harishchandragad Night Trek</span></p></footer>
+        </article>
+        <article class="testimonial-card">
+          <div class="testimonial-top"><span>★★★★★</span><small>Verified Booking</small></div>
+          <blockquote>“I liked that everything was in one place — pricing, itinerary, cancellation terms, and the verified operator details.”</blockquote>
+          <footer><div class="traveller-avatar">AK</div><p><b>Arjun K.</b><span>Pune · Kundalika River Rafting</span></p></footer>
+        </article>
+        <article class="testimonial-card">
+          <div class="testimonial-top"><span>★★★★★</span><small>Verified Booking</small></div>
+          <blockquote>“It felt much safer than booking through random messages. The operator handoff made the whole trip feel organized.”</blockquote>
+          <footer><div class="traveller-avatar">NR</div><p><b>Neha R.</b><span>Bengaluru · Bhandardara Lakeside Camp</span></p></footer>
+        </article>
+        <article class="testimonial-card">
+          <div class="testimonial-top"><span>★★★★★</span><small>Verified Booking</small></div>
+          <blockquote>“The experience page answered the questions I usually have before booking: difficulty, group size, inclusions, and what happens next.”</blockquote>
+          <footer><div class="traveller-avatar">RM</div><p><b>Rohan M.</b><span>Nashik · Sandhan Valley Rappel</span></p></footer>
+        </article>
+      </div>
+    </section>
+
     <section class="operator-band" id="operators">
       <div>
         <span class="eyebrow light">A marketplace powered by local experts</span>
@@ -145,14 +168,49 @@
     </section>
   </main>
 
-  <footer>
-    <a class="brand footer-brand" href="/">
-      <span class="brand-mark"><svg viewBox="0 0 42 42"><path d="M4 32 15.8 12l7 10 4-6L38 32H4Z"/></svg></span>
-      <span>MAHA<b>GETAWAYS</b></span>
-    </a>
-    <p>Adventure experiences, weekend getaways and trusted local operators across Maharashtra.</p>
-    <div><a href="#experiences">Explore</a><a href="#operators">Operators</a><a href="mailto:hello@mahagetaways.in">Support</a></div>
-    <small>© 2026 MahaGetaways. Adventure responsibly.</small>
+  <footer class="site-footer">
+    <div class="footer-intro">
+      <a class="brand footer-brand" href="/">
+        <span class="brand-mark"><svg viewBox="0 0 42 42"><path d="M4 32 15.8 12l7 10 4-6L38 32H4Z"/></svg></span>
+        <span>MAHA<b>GETAWAYS</b></span>
+      </a>
+      <p>Discover, compare and book verified adventure experiences across Maharashtra.</p>
+      <div class="social-links" aria-label="MahaGetaways social links">
+        <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+        </a>
+        <a href="https://www.linkedin.com/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+          <svg viewBox="0 0 24 24"><path d="M6 9v9M6 6v.1M10 18v-5a4 4 0 0 1 8 0v5M10 9v9"/></svg>
+        </a>
+        <a href="https://x.com/" target="_blank" rel="noreferrer" aria-label="X">
+          <svg viewBox="0 0 24 24"><path d="m5 4 14 16M19 4 5 20"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer-column">
+      <h3>About</h3>
+      <a href="#experiences">Explore experiences</a>
+      <a href="#destinations">Maharashtra destinations</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#operators">For operators</a>
+    </div>
+    <div class="footer-column">
+      <h3>Support</h3>
+      <a href="#how-it-works">Booking help</a>
+      <a href="#experiences">Pricing & inclusions</a>
+      <a href="#experiences">Cancellation guidance</a>
+      <a href="mailto:support@mahagetaways.in">Traveller support</a>
+    </div>
+    <div class="footer-column footer-contact">
+      <h3>Contact</h3>
+      <p>Questions about a trip or listing your experiences?</p>
+      <a href="mailto:support@mahagetaways.in">support@mahagetaways.in</a>
+      <span>Maharashtra, India</span>
+    </div>
+    <div class="footer-bottom">
+      <small>© 2026 MahaGetaways. Adventure responsibly.</small>
+      <div><a href="#how-it-works">Terms</a><a href="#how-it-works">Privacy</a><a href="#how-it-works">Safety</a></div>
+    </div>
   </footer>
 
   <div class="modal" id="detailModal" aria-hidden="true">
@@ -179,6 +237,6 @@
   </div>
 
   <div class="toast" id="toast" role="status"></div>
-  <script src="/app.js?v=11" defer></script>
+  <script src="/app.js?v=14" defer></script>
 </body>
 </html>

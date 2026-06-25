@@ -372,7 +372,7 @@ function bookingTemplate(item) {
         </div>
       </div>
       <div class="booking-summary" id="priceSummary"></div>
-      <button class="primary-btn booking-submit" type="submit">Continue to Demo Payment · <span id="payAmount"></span></button>
+      <button class="primary-btn booking-submit" type="submit">Continue to Payment · <span id="payAmount"></span></button>
       <p class="secure-note">🔒 The next step uses clearly labelled demo card information. No real card details are collected or stored.</p>
       <p class="cancellation-note">Free cancellation up to 72 hours before the experience. Operator costs may apply after that.</p>
     </form>`;
@@ -406,7 +406,8 @@ function paymentTemplate(booking) {
       <div class="demo-card-meta"><span><small>VALID THRU</small>12/30</span><span><small>CVV</small>123</span></div>
     </div>
     <p class="demo-payment-note">Demo credentials are display-only and are not transmitted or stored.</p>
-    <button class="primary-btn booking-submit" id="confirmDemoPayment">Confirm Demo Payment · ${currency(booking.amount)}</button>`;
+    <button class="primary-btn booking-submit" id="confirmDemoPayment">Confirm Booking · ${currency(booking.amount)}</button>
+    <p class="demo-confirmation-note"><b>Demo payment only</b><span>No real payment will be processed.</span></p>`;
 }
 
 function confirmationTemplate(booking) {
@@ -481,7 +482,7 @@ async function submitBooking(event) {
   } catch (error) {
     showToast(error.message || "Something went wrong. Please try again.");
     button.disabled = false;
-    button.innerHTML = `Continue to Demo Payment · <span id="payAmount"></span>`;
+    button.innerHTML = `Continue to Payment · <span id="payAmount"></span>`;
     updatePrice();
   }
 }
@@ -494,12 +495,13 @@ function showToast(message) {
   showToast.timer = setTimeout(() => toast.classList.remove("show"), 2200);
 }
 
-function applyFilters() {
-  state.filters.region = $("#destinationFilter").value;
-  state.filters.category = $("#categoryFilter").value;
-  $$("#filterPills button").forEach((button) => button.classList.toggle("active", button.dataset.filter === state.filters.category));
+function applyCategoryFilter(category, scrollToResults = false) {
+  state.filters.category = category;
+  $$(".filter-pills [data-filter]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.filter === state.filters.category);
+  });
   renderExperiences();
-  $("#experiences").scrollIntoView({ behavior: "smooth" });
+  if (scrollToResults) $("#experiences").scrollIntoView({ behavior: "smooth" });
 }
 
 async function init() {
@@ -514,7 +516,6 @@ async function init() {
   }
 }
 
-$("#searchForm").addEventListener("submit", (event) => { event.preventDefault(); applyFilters(); });
 $("#experienceGrid").addEventListener("click", (event) => {
   const save = event.target.closest("[data-save]");
   if (save) { event.stopPropagation(); return toggleSave(save.dataset.save); }
@@ -524,14 +525,11 @@ $("#experienceGrid").addEventListener("click", (event) => {
 $("#experienceGrid").addEventListener("keydown", (event) => {
   if (event.key === "Enter" && event.target.matches("[data-id]")) openDetail(event.target.dataset.id);
 });
-$("#filterPills").addEventListener("click", (event) => {
+$$(".filter-pills").forEach((filterGroup) => filterGroup.addEventListener("click", (event) => {
   const button = event.target.closest("[data-filter]");
   if (!button) return;
-  state.filters.category = button.dataset.filter;
-  $("#categoryFilter").value = state.filters.category;
-  $$("#filterPills button").forEach((item) => item.classList.toggle("active", item === button));
-  renderExperiences();
-});
+  applyCategoryFilter(button.dataset.filter, filterGroup.classList.contains("filter-pills--hero"));
+}));
 $("#detailModal").addEventListener("click", (event) => {
   if (event.target.closest("[data-close-modal]")) closeModal("#detailModal");
   const book = event.target.closest("[data-book]");
@@ -542,20 +540,16 @@ $("#bookingModal").addEventListener("click", (event) => {
 });
 $$(".destination-card").forEach((button) => button.addEventListener("click", () => {
   state.filters.region = button.dataset.region;
-  $("#destinationFilter").value = state.filters.region;
   renderExperiences();
   $("#experiences").scrollIntoView({ behavior: "smooth" });
 }));
 $$("[data-scroll]").forEach((button) => button.addEventListener("click", () => $(button.dataset.scroll).scrollIntoView({ behavior: "smooth" })));
 $("#resetFilters").addEventListener("click", () => {
   state.filters = { category: "all", region: "all" };
-  $("#destinationFilter").value = "all";
-  $("#categoryFilter").value = "all";
-  $$("#filterPills button").forEach((button) => button.classList.toggle("active", button.dataset.filter === "all"));
-  renderExperiences();
+  applyCategoryFilter("all");
 });
 $("#savedBtn").addEventListener("click", () => showToast(state.saved.size ? `${state.saved.size} adventure${state.saved.size > 1 ? "s" : ""} saved on this device` : "Save an adventure and it will appear here"));
-$("#operatorBtn").addEventListener("click", () => showToast("Operator onboarding opens soon — hello@mahagetaways.in"));
+$("#operatorBtn").addEventListener("click", () => showToast("Operator onboarding opens soon — support@mahagetaways.in"));
 $("#menuBtn").addEventListener("click", () => {
   const open = $(".site-header nav").classList.toggle("open");
   $("#menuBtn").setAttribute("aria-expanded", String(open));
