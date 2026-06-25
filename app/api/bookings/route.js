@@ -28,7 +28,7 @@ export async function POST(request) {
       {
         data: booking,
         message:
-          "Booking confirmed. In production, payment authorization is completed by the configured provider.",
+          "Booking confirmed and assigned to the verified local operator. Demo payment authorization was simulated.",
       },
       { status: 201 },
     );

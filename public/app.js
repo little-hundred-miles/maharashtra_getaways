@@ -4,6 +4,7 @@ const state = {
   experiences: [],
   filters: { category: "all", region: "all" },
   selected: null,
+  booking: null,
   saved: new Set(savedExperiences)
 };
 
@@ -233,6 +234,7 @@ function cardTemplate(item) {
       <div class="card-body">
         <div class="card-meta"><span>${item.location}</span><i></i><span>${item.category}</span></div>
         <h3>${item.title}</h3>
+        <div class="card-operator"><span>✓ Verified operator</span><b>${item.operator.name}</b></div>
         <div class="card-facts">
           <span>${item.duration}</span><span>${item.difficulty}</span><span><b>★</b> ${item.rating} (${item.reviews})</span>
         </div>
@@ -285,22 +287,33 @@ function detailTemplate(item) {
         <div><small>Group</small><b>${item.groupSize}</b></div>
         <div><small>Trail detail</small><b>${item.altitude}</b></div>
       </div>
+      <div class="detail-bookbar">
+        <div><strong>${currency(item.price)}</strong> <small>/ person</small></div>
+        <button class="primary-btn" data-book="${item.id}">Check dates & book</button>
+      </div>
       <p class="detail-summary">${item.summary}</p>
+      <div class="detail-assurances">
+        <span><b>✓ Verified</b> local operator</span>
+        <span><b>₹ Upfront</b> pricing</span>
+        <span><b>↺ Clear</b> cancellation terms</span>
+      </div>
       <h3>Why you'll love it</h3>
       <ul class="highlight-list">${item.highlights.map((value) => `<li>${value}</li>`).join("")}</ul>
       <h3>Your itinerary</h3>
       <div>${item.itinerary.map((day) => `<div class="itinerary-item"><small>${day.day}</small><h4>${day.title}</h4><p>${day.detail}</p></div>`).join("")}</div>
       <h3>What's included</h3>
       <ul class="included-list">${item.included.map((value) => `<li>${value}</li>`).join("")}</ul>
+      <h3>Not included</h3>
+      <ul class="excluded-list">${item.notIncluded.map((value) => `<li>${value}</li>`).join("")}</ul>
+      <div class="cancellation-card">
+        <b>Flexible cancellation</b>
+        <p>Cancel up to 72 hours before the experience for a full refund. After that, operator costs may apply.</p>
+      </div>
       <h3>Your local operator</h3>
       <div class="operator-card">
         <div class="operator-avatar">${item.operator.name.charAt(0)}</div>
-        <div><b>${item.operator.name}</b> <span class="verified">● Verified</span><p>★ ${item.operator.rating} · ${item.operator.trips} trips · Hosting since ${item.operator.since}</p></div>
+        <div><b>${item.operator.name}</b> <span class="verified">● Identity & experience verified</span><p>★ ${item.operator.rating} · ${item.operator.trips} trips · Hosting since ${item.operator.since}</p><small>Handles safety, logistics, meeting details and on-ground execution.</small></div>
       </div>
-    </div>
-    <div class="detail-bookbar">
-      <div><strong>${currency(item.price)}</strong> <small>/ person</small></div>
-      <button class="primary-btn" data-book="${item.id}">Check dates & book</button>
     </div>`;
 }
 
@@ -320,16 +333,27 @@ function closeModal(id) {
   if (!$$(".modal.open").length) document.body.classList.remove("modal-open");
 }
 
+function setBookingStep(currentStep, complete = false) {
+  $$(".booking-step").forEach((step) => {
+    const stepNumber = Number(step.dataset.step);
+    step.classList.toggle("completed", complete || stepNumber < currentStep);
+    step.classList.toggle("active", !complete && stepNumber === currentStep);
+  });
+}
+
 function bookingTemplate(item) {
   const tomorrow = new Date(Date.now() + 86400000 * 3).toISOString().slice(0, 10);
   return `
     <div class="booking-header">
-      <h2 id="bookingTitle">Almost adventure time.</h2>
-      <p>Tell us who's coming. Your operator receives the trip details after secure payment.</p>
+      <h2 id="bookingTitle">Secure your spot.</h2>
+      <p>Review the full price, enter traveller details and confirm. Your verified operator receives the booking immediately.</p>
     </div>
     <div class="booking-experience">
       <img src="${item.image}" alt="">
-      <div><h3>${item.title}</h3><span>${item.location} · Hosted by ${item.operator.name}</span></div>
+      <div><h3>${item.title}</h3><span>${item.location} · ✓ Verified operator: ${item.operator.name}</span></div>
+    </div>
+    <div class="checkout-assurances">
+      <span>Secure booking</span><span>Clear cancellation</span><span>Operator handoff</span>
     </div>
     <form id="bookingForm">
       <div class="form-grid">
@@ -348,9 +372,60 @@ function bookingTemplate(item) {
         </div>
       </div>
       <div class="booking-summary" id="priceSummary"></div>
-      <button class="primary-btn booking-submit" type="submit">Continue to secure payment · <span id="payAmount"></span></button>
-      <p class="secure-note">🔒 Payment details are encrypted and handled by your configured PCI-compliant payment provider.</p>
+      <button class="primary-btn booking-submit" type="submit">Continue to Demo Payment · <span id="payAmount"></span></button>
+      <p class="secure-note">🔒 The next step uses clearly labelled demo card information. No real card details are collected or stored.</p>
+      <p class="cancellation-note">Free cancellation up to 72 hours before the experience. Operator costs may apply after that.</p>
     </form>`;
+}
+
+function paymentTemplate(booking) {
+  return `
+    <div class="booking-header">
+      <span class="eyebrow">Demo checkout</span>
+      <h2 id="bookingTitle">Review your payment.</h2>
+      <p>This is a simulated payment screen for the MahaGetaways demo. No funds will be charged.</p>
+    </div>
+    <div class="payment-booking-card">
+      <div>
+        <small>Experience</small>
+        <h3>${booking.experienceTitle}</h3>
+        <p>${booking.date} · ${booking.guests} ${booking.guests === 1 ? "guest" : "guests"} · ${booking.operator}</p>
+      </div>
+      <span>✓ Verified operator</span>
+    </div>
+    <div class="payment-summary">
+      <h3>Booking summary</h3>
+      <div class="summary-line"><span>Experience subtotal</span><span>${currency(booking.operatorPayout)}</span></div>
+      <div class="summary-line"><span>Platform fee (4%)</span><span>${currency(booking.platformFee)}</span></div>
+      <div class="summary-line total"><span>Total amount</span><span>${currency(booking.amount)}</span></div>
+      <p class="fee-explanation">The subtotal goes to the operator. The platform fee covers booking confirmation, coordination and traveller support.</p>
+    </div>
+    <div class="demo-card">
+      <div class="demo-card-top"><span>MAHAGETAWAYS</span><b>DEMO CARD</b></div>
+      <strong>4242 4242 4242 4242</strong>
+      <div class="demo-card-meta"><span><small>VALID THRU</small>12/30</span><span><small>CVV</small>123</span></div>
+    </div>
+    <p class="demo-payment-note">Demo credentials are display-only and are not transmitted or stored.</p>
+    <button class="primary-btn booking-submit" id="confirmDemoPayment">Confirm Demo Payment · ${currency(booking.amount)}</button>`;
+}
+
+function confirmationTemplate(booking) {
+  return `
+    <div class="success-view">
+      <div class="success-icon">✓</div>
+      <h2>Your getaway is booked.</h2>
+      <p>Your place on <b>${state.selected.title}</b> is confirmed and has been handed to <b>${booking.operator}</b>.</p>
+      <small class="reference-label">Booking reference</small>
+      <div class="booking-reference">${booking.id}</div>
+      <div class="confirmation-summary">
+        <span><small>Trip date</small><b>${booking.date}</b></span>
+        <span><small>Guests</small><b>${booking.guests}</b></span>
+        <span><small>Total paid</small><b>${currency(booking.amount)}</b></span>
+      </div>
+      <div class="handoff-card"><b>What happens next?</b><p>${booking.operator} will contact you with the meeting point, packing list and final trip instructions. MahaGetaways remains your booking-support contact.</p></div>
+      <p>Confirmation recorded for ${booking.email}.</p>
+      <button class="primary-btn" data-close-booking>Back to exploring</button>
+    </div>`;
 }
 
 function updatePrice() {
@@ -360,18 +435,21 @@ function updatePrice() {
   const fee = Math.round(subtotal * 0.04);
   $("#priceSummary").innerHTML = `
     <div class="summary-line"><span>${currency(item.price)} × ${guests} ${guests === 1 ? "guest" : "guests"}</span><span>${currency(subtotal)}</span></div>
-    <div class="summary-line"><span>Platform & trip support</span><span>${currency(fee)}</span></div>
+    <div class="summary-line"><span>Platform, booking & trip support (4%)</span><span>${currency(fee)}</span></div>
     <div class="summary-line total"><span>Total</span><span>${currency(subtotal + fee)}</span></div>`;
+  $("#priceSummary").insertAdjacentHTML("beforeend", `<p class="fee-explanation">The experience price goes to the operator. The platform fee covers booking confirmation, operator coordination and traveller support.</p>`);
   $("#payAmount").textContent = currency(subtotal + fee);
 }
 
 function openBooking(id) {
   state.selected = state.experiences.find((item) => item.id === id);
+  state.booking = null;
   closeModal("#detailModal");
   $("#bookingContent").innerHTML = bookingTemplate(state.selected);
   $("#bookingModal").classList.add("open");
   $("#bookingModal").setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
+  setBookingStep(2);
   updatePrice();
   $("#guests").addEventListener("change", updatePrice);
   $("#bookingForm").addEventListener("submit", submitBooking);
@@ -384,7 +462,7 @@ async function submitBooking(event) {
   data.phone = `${data.countryCode} ${data.phone.trim()}`;
   delete data.countryCode;
   button.disabled = true;
-  button.textContent = "Authorizing securely…";
+  button.textContent = "Preparing Demo Payment…";
   try {
     const response = await fetch("/api/bookings", {
       method: "POST",
@@ -393,20 +471,17 @@ async function submitBooking(event) {
     });
     const result = await response.json();
     if (!response.ok) throw new Error(result.error);
-    $$(".booking-steps span").forEach((step) => step.classList.add("active"));
-    $("#bookingContent").innerHTML = `
-      <div class="success-view">
-        <div class="success-icon">✓</div>
-        <h2>Your getaway is booked.</h2>
-        <p>Your place on <b>${state.selected.title}</b> is confirmed.<br>Your local operator will be in touch with the meeting details.</p>
-        <div class="booking-reference">${result.data.id}</div>
-        <p>A confirmation has been prepared for ${result.data.email}.</p>
-        <button class="primary-btn" data-close-booking>Back to exploring</button>
-      </div>`;
+    state.booking = result.data;
+    setBookingStep(3);
+    $("#bookingContent").innerHTML = paymentTemplate(state.booking);
+    $("#confirmDemoPayment").addEventListener("click", () => {
+      setBookingStep(3, true);
+      $("#bookingContent").innerHTML = confirmationTemplate(state.booking);
+    });
   } catch (error) {
     showToast(error.message || "Something went wrong. Please try again.");
     button.disabled = false;
-    button.innerHTML = `Continue to secure payment · <span id="payAmount"></span>`;
+    button.innerHTML = `Continue to Demo Payment · <span id="payAmount"></span>`;
     updatePrice();
   }
 }

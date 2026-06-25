@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/styles.css?v=2">
+  <link rel="stylesheet" href="/styles.css?v=4">
 </head>
 <body>
   <header class="site-header">
@@ -41,7 +41,7 @@
       <div class="hero-content">
         <span class="eyebrow light">Maharashtra's adventure booking marketplace</span>
         <h1>Find your next<br><em>Maharashtra getaway.</em></h1>
-        <p>Discover destinations, compare activities, pricing and itineraries, then book with verified local operators.</p>
+        <p>Discover and compare verified adventures across Maharashtra. Book on MahaGetaways; trusted local operators handle every on-ground detail.</p>
         <form class="search-bar" id="searchForm">
           <label>
             <span>Where</span>
@@ -68,11 +68,11 @@
           </button>
         </form>
         <div class="trust-row">
-          <span><b>4.8</b> average rating</span>
+          <span><b>Verified</b> local operators</span>
           <i></i>
-          <span><b>100%</b> verified operators</span>
+          <span><b>Upfront</b> pricing & inclusions</span>
           <i></i>
-          <span><b>24/7</b> trip support</span>
+          <span><b>Secure</b> booking & trip support</span>
         </div>
       </div>
       <div class="scroll-cue"><span></span>Scroll to explore</div>
@@ -82,9 +82,9 @@
       <div class="section-heading">
         <div>
           <span class="eyebrow">Handpicked for this season</span>
-          <h2>Leave ordinary behind.</h2>
+          <h2>Compare less. Explore more.</h2>
         </div>
-        <p>Compare trusted treks, camps, water sports and weekend escapes—with clear pricing, detailed itineraries and local expertise.</p>
+        <p>Every listing brings pricing, itineraries, difficulty, inclusions and a verified local operator together in one place.</p>
       </div>
       <div class="filter-pills" id="filterPills">
         <button class="active" data-filter="all">All adventures</button>
@@ -135,11 +135,11 @@
 
     <section class="operator-band" id="operators">
       <div>
-        <span class="eyebrow light">Built with local experts</span>
-        <h2>Know these trails<br>like your own?</h2>
+        <span class="eyebrow light">A marketplace powered by local experts</span>
+        <h2>You lead the adventure.<br>We power the booking.</h2>
       </div>
       <div class="operator-copy">
-        <p>List your experiences on MahaGetaways and reach travellers across Maharashtra. We handle discovery, bookings and payments—you deliver an experience worth remembering.</p>
+        <p>MahaGetaways brings you ready-to-book travellers and handles discovery, transparent listings, booking and payment coordination. You stay in control of safety, logistics and the on-ground experience.</p>
         <button class="cream-button" id="operatorBtn">Become an operator <span>↗</span></button>
       </div>
     </section>
@@ -167,12 +167,18 @@
     <div class="modal-backdrop" data-close-booking></div>
     <article class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
       <button class="modal-close" data-close-booking aria-label="Close">×</button>
-      <div class="booking-steps"><span class="active">1</span><i></i><span>2</span><i></i><span>3</span></div>
+      <div class="booking-steps" aria-label="Booking progress">
+        <div class="booking-step" data-step="1"><span>1</span><small>Trip Details</small></div>
+        <i></i>
+        <div class="booking-step" data-step="2"><span>2</span><small>Traveller Information</small></div>
+        <i></i>
+        <div class="booking-step" data-step="3"><span>3</span><small>Demo Payment</small></div>
+      </div>
       <div id="bookingContent"></div>
     </article>
   </div>
 
   <div class="toast" id="toast" role="status"></div>
-  <script src="/app.js?v=8" defer></script>
+  <script src="/app.js?v=11" defer></script>
 </body>
 </html>
