@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <div dangerouslySetInnerHTML={{ __html: getLegacyMarkup() }} />
-      <Script src="/app.js?v=14" strategy="afterInteractive" />
+      <Script src="/app.js?v=15" strategy="afterInteractive" />
     </>
   );
 }

@@ -289,7 +289,7 @@ function detailTemplate(item) {
       </div>
       <div class="detail-bookbar">
         <div><strong>${currency(item.price)}</strong> <small>/ person</small></div>
-        <button class="primary-btn" data-book="${item.id}">Check dates & book</button>
+        <button class="primary-btn" data-book="${item.id}">Book Now</button>
       </div>
       <p class="detail-summary">${item.summary}</p>
       <div class="detail-assurances">
