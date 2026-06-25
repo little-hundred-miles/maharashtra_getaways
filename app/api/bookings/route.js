@@ -2,6 +2,7 @@ import {
   createBooking,
   getBookings,
   getExperiences,
+  isBookingPersistenceEnabled,
   saveBookings,
   validateBooking,
 } from "../../../lib/data.js";
@@ -23,12 +24,14 @@ export async function POST(request) {
     const bookings = await getBookings();
     bookings.push(booking);
     await saveBookings(bookings);
+    const persisted = isBookingPersistenceEnabled();
 
     return Response.json(
       {
         data: booking,
+        persistence: persisted ? "local-json" : "simulated",
         message:
-          "Booking confirmed and assigned to the verified local operator. Demo payment authorization was simulated.",
+          `Booking confirmed and assigned to the verified local operator. Demo payment authorization was simulated${persisted ? " and the booking was stored locally." : "; deployed MVP persistence is simulated."}`,
       },
       { status: 201 },
     );

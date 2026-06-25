@@ -15,7 +15,7 @@ The current MVP demonstrates:
 - Verified operator profiles and explicit on-ground handoff
 - Saved experiences stored in the browser
 - Booking for groups of up to 20 with international country-code support
-- Server-side input validation, fee calculation and booking persistence
+- Server-side input validation, fee calculation and environment-aware demo booking handling
 - A demo-safe payment authorization state that collects no card details
 - Booking references, confirmation summaries and operator next steps
 
@@ -25,7 +25,7 @@ The current MVP demonstrates:
 - React 19 runtime
 - HTML, CSS and browser JavaScript for the existing interactive interface
 - Next.js route handlers for the API
-- JSON files for MVP experience and booking storage
+- JSON files for experience data and local-development booking storage
 - Node.js 20+
 
 The visual interface lives in `public/` and is rendered by the Next.js page. API route handlers live under `app/api/`.
@@ -52,7 +52,14 @@ The visual interface lives in `public/` and is rendered by the Next.js page. API
 }
 ```
 
-The response includes the booking reference, total amount, platform fee, operator payout and assigned operator.
+The response includes the booking reference, total amount, platform fee, operator payout, assigned operator and persistence mode.
+
+### Booking persistence by environment
+
+- **Local development:** successful bookings are appended to `data/bookings.json` for convenient demos.
+- **Vercel deployment:** booking persistence is intentionally simulated. The route validates the request, calculates all amounts, creates an `MG-*` reference and returns the complete confirmation without reading or writing booking files.
+
+Vercel serverless functions have an immutable project filesystem, so the deployed MVP never depends on filesystem writes. A production database remains a future roadmap item.
 
 ## Run locally
 
@@ -83,10 +90,11 @@ npm run build
 4. Select **Check dates & book**.
 5. Change the group size to demonstrate live pricing and the clearly explained 4% platform/support fee.
 6. Complete the traveller form with a valid email and phone number.
-7. Submit to show the booking reference, confirmation recap and operator handoff.
-8. Mention the operator summary endpoint as the foundation for a future operator dashboard.
+7. Continue to the simulated payment screen and confirm the demo payment.
+8. Show the booking reference, confirmation recap and operator handoff.
+9. Mention the operator summary endpoint as the foundation for a future operator dashboard.
 
-The booking request writes a demo record to `data/bookings.json`. Clear that file back to `[]` before a fresh judging session if desired.
+When running locally, the booking request writes a demo record to `data/bookings.json`. Clear that file back to `[]` before a fresh judging session if desired. On Vercel, the same flow returns a successful confirmation without persisting the record.
 
 ## Trust and marketplace model
 
@@ -100,7 +108,8 @@ The booking request writes a demo record to `data/bookings.json`. Clear that fil
 ## Known MVP limitations
 
 - Payment authorization is simulated; no card details are collected or stored.
-- Bookings are stored in a local JSON file and are not suitable for concurrent production traffic.
+- Deployed bookings are confirmation simulations and are not retained after the serverless request completes.
+- Local bookings use a JSON file and are not suitable for concurrent production traffic.
 - There is no traveller or operator authentication.
 - Operator verification is represented by curated seed data rather than an onboarding workflow.
 - Cancellation guidance is displayed, but automated cancellation and refund processing are not implemented.
@@ -110,7 +119,7 @@ The booking request writes a demo record to `data/bookings.json`. Clear that fil
 
 ## Future roadmap
 
-- PostgreSQL with transactional inventory and booking storage
+- PostgreSQL with transactional inventory and durable booking storage
 - Razorpay or Stripe payment intents and signed webhooks
 - Traveller and operator accounts with role-based access
 - Operator onboarding, document checks and listing management
