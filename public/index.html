@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Discover destinations, compare adventure experiences, view pricing and itineraries, and book verified local operators across Maharashtra.">
+  <meta name="theme-color" content="#163d2b">
+  <title>MahaGetaways — Adventure experiences across Maharashtra</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css?v=2">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="MahaGetaways home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 42 42"><path d="M4 32 15.8 12l7 10 4-6L38 32H4Z"/><path d="m12 32 8-13 10 13"/></svg>
+      </span>
+      <span>MAHA<b>GETAWAYS</b></span>
+    </a>
+    <nav aria-label="Main navigation">
+      <a href="#experiences">Experiences</a>
+      <a href="#destinations">Destinations</a>
+      <a href="#how-it-works">How it works</a>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" id="savedBtn" aria-label="Saved adventures">
+        <svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg>
+        <span class="saved-count" id="savedCount">0</span>
+      </button>
+      <a class="operator-link" href="#operators">For operators</a>
+      <button class="menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img src="/assets/sahyadri-hero.png" alt="Hikers walking along a green Sahyadri ridge at sunrise">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <span class="eyebrow light">Maharashtra's adventure booking marketplace</span>
+        <h1>Find your next<br><em>Maharashtra getaway.</em></h1>
+        <p>Discover destinations, compare activities, pricing and itineraries, then book with verified local operators.</p>
+        <form class="search-bar" id="searchForm">
+          <label>
+            <span>Where</span>
+            <select id="destinationFilter" aria-label="Choose destination">
+              <option value="all">All Maharashtra</option>
+              <option value="Sahyadri">Sahyadri</option>
+              <option value="Konkan">Konkan Coast</option>
+            </select>
+          </label>
+          <div class="search-divider"></div>
+          <label>
+            <span>Adventure</span>
+            <select id="categoryFilter" aria-label="Choose activity">
+              <option value="all">Any activity</option>
+              <option value="Trekking">Trekking</option>
+              <option value="Camping">Camping</option>
+              <option value="Water sports">Water sports</option>
+              <option value="Rock adventure">Rock adventure</option>
+            </select>
+          </label>
+          <button type="submit" aria-label="Search adventures">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+            Explore
+          </button>
+        </form>
+        <div class="trust-row">
+          <span><b>4.8</b> average rating</span>
+          <i></i>
+          <span><b>100%</b> verified operators</span>
+          <i></i>
+          <span><b>24/7</b> trip support</span>
+        </div>
+      </div>
+      <div class="scroll-cue"><span></span>Scroll to explore</div>
+    </section>
+
+    <section class="section experience-section" id="experiences">
+      <div class="section-heading">
+        <div>
+          <span class="eyebrow">Handpicked for this season</span>
+          <h2>Leave ordinary behind.</h2>
+        </div>
+        <p>Compare trusted treks, camps, water sports and weekend escapes—with clear pricing, detailed itineraries and local expertise.</p>
+      </div>
+      <div class="filter-pills" id="filterPills">
+        <button class="active" data-filter="all">All adventures</button>
+        <button data-filter="Trekking">Trekking</button>
+        <button data-filter="Camping">Camping</button>
+        <button data-filter="Water sports">Water sports</button>
+        <button data-filter="Rock adventure">Rock & rappel</button>
+      </div>
+      <div class="experience-grid" id="experienceGrid" aria-live="polite"></div>
+      <div class="empty-state hidden" id="emptyState">
+        <h3>The trail goes quiet here.</h3>
+        <p>Try a different destination or adventure type.</p>
+        <button class="text-button" id="resetFilters">Show all adventures</button>
+      </div>
+    </section>
+
+    <section class="destinations" id="destinations">
+      <div class="destination-copy">
+        <span class="eyebrow light">Explore by landscape</span>
+        <h2>One state.<br>Many worlds.</h2>
+        <p>Trace ancient fort paths through the Sahyadris, chase monsoon waterfalls, or slip beneath the Konkan's blue horizon.</p>
+        <button class="outline-light" data-scroll="#experiences">Explore all regions <span>↗</span></button>
+      </div>
+      <div class="destination-cards">
+        <button class="destination-card sahyadri-card" data-region="Sahyadri">
+          <span class="dest-number">01</span>
+          <div><span>Mountain country</span><h3>The Sahyadris</h3><p>Treks · Forts · Camps</p></div>
+          <b>↗</b>
+        </button>
+        <button class="destination-card konkan-card" data-region="Konkan">
+          <span class="dest-number">02</span>
+          <div><span>Coastal wild</span><h3>The Konkan</h3><p>Diving · Rafting · Trails</p></div>
+          <b>↗</b>
+        </button>
+      </div>
+    </section>
+
+    <section class="section steps-section" id="how-it-works">
+      <div class="section-heading compact">
+        <div><span class="eyebrow">Adventure, made easy</span><h2>You Enjoy. We Handle the rest.</h2></div>
+      </div>
+      <div class="steps">
+        <article><span>01</span><div class="step-icon">⌖</div><h3>Discover & compare</h3><p>Explore Maharashtra destinations and compare activities, dates, pricing, itineraries and difficulty ratings.</p></article>
+        <article><span>02</span><div class="step-icon">✓</div><h3>Book with confidence</h3><p>Reserve your experience through a seamless checkout with secure payments and instant confirmation.</p></article>
+        <article><span>03</span><div class="step-icon">↟</div><h3>Meet your local expert</h3><p>Connect with a verified operator who handles safety, logistics and your on-ground experience.</p></article>
+      </div>
+    </section>
+
+    <section class="operator-band" id="operators">
+      <div>
+        <span class="eyebrow light">Built with local experts</span>
+        <h2>Know these trails<br>like your own?</h2>
+      </div>
+      <div class="operator-copy">
+        <p>List your experiences on MahaGetaways and reach travellers across Maharashtra. We handle discovery, bookings and payments—you deliver an experience worth remembering.</p>
+        <button class="cream-button" id="operatorBtn">Become an operator <span>↗</span></button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <a class="brand footer-brand" href="/">
+      <span class="brand-mark"><svg viewBox="0 0 42 42"><path d="M4 32 15.8 12l7 10 4-6L38 32H4Z"/></svg></span>
+      <span>MAHA<b>GETAWAYS</b></span>
+    </a>
+    <p>Adventure experiences, weekend getaways and trusted local operators across Maharashtra.</p>
+    <div><a href="#experiences">Explore</a><a href="#operators">Operators</a><a href="mailto:hello@mahagetaways.in">Support</a></div>
+    <small>© 2026 MahaGetaways. Adventure responsibly.</small>
+  </footer>
+
+  <div class="modal" id="detailModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <article class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <button class="modal-close" data-close-modal aria-label="Close">×</button>
+      <div id="detailContent"></div>
+    </article>
+  </div>
+
+  <div class="modal" id="bookingModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-booking></div>
+    <article class="booking-panel" role="dialog" aria-modal="true" aria-labelledby="bookingTitle">
+      <button class="modal-close" data-close-booking aria-label="Close">×</button>
+      <div class="booking-steps"><span class="active">1</span><i></i><span>2</span><i></i><span>3</span></div>
+      <div id="bookingContent"></div>
+    </article>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+  <script src="/app.js?v=8" defer></script>
+</body>
+</html>
