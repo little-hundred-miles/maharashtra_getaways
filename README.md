@@ -83,9 +83,6 @@ npm run build
 9. Show the booking reference, confirmation recap and operator handoff.
 10. Mention the operator summary endpoint as the foundation for a future operator dashboard.
 
-When running locally, the booking request writes a demo record to `data/bookings.json`. Clear that file back to `[]` before a fresh judging session if desired. On Vercel, the same flow returns a successful confirmation without persisting the record.
-
-
 ## MVP limitations
 
 - Payment authorization is simulated; no card details are collected or stored.
