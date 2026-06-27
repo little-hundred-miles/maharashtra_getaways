@@ -496,12 +496,30 @@ function showToast(message) {
 }
 
 function applyCategoryFilter(category, scrollToResults = false) {
-  state.filters.category = category;
+  state.filters = { category, region: "all" };
   $$(".filter-pills [data-filter]").forEach((button) => {
     button.classList.toggle("active", button.dataset.filter === state.filters.category);
   });
+  $$(".destination-card").forEach((button) => {
+    button.classList.remove("active");
+    button.setAttribute("aria-pressed", "false");
+  });
   renderExperiences();
   if (scrollToResults) $("#experiences").scrollIntoView({ behavior: "smooth" });
+}
+
+function applyRegionFilter(region) {
+  state.filters = { category: "all", region };
+  $$(".filter-pills [data-filter]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.filter === "all");
+  });
+  $$(".destination-card").forEach((button) => {
+    const isActive = button.dataset.region === region;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+  renderExperiences();
+  $("#experiences").scrollIntoView({ behavior: "smooth" });
 }
 
 async function init() {
@@ -539,13 +557,10 @@ $("#bookingModal").addEventListener("click", (event) => {
   if (event.target.closest("[data-close-booking]")) closeModal("#bookingModal");
 });
 $$(".destination-card").forEach((button) => button.addEventListener("click", () => {
-  state.filters.region = button.dataset.region;
-  renderExperiences();
-  $("#experiences").scrollIntoView({ behavior: "smooth" });
+  applyRegionFilter(button.dataset.region);
 }));
 $$("[data-scroll]").forEach((button) => button.addEventListener("click", () => $(button.dataset.scroll).scrollIntoView({ behavior: "smooth" })));
 $("#resetFilters").addEventListener("click", () => {
-  state.filters = { category: "all", region: "all" };
   applyCategoryFilter("all");
 });
 $("#savedBtn").addEventListener("click", () => showToast(state.saved.size ? `${state.saved.size} adventure${state.saved.size > 1 ? "s" : ""} saved on this device` : "Save an adventure and it will appear here"));
