@@ -1,23 +1,18 @@
 # MahaGetaways
+A full-stack marketplace for discovering and booking outdoor adventure experiences across Maharashtra.
 
-MahaGetaways is a full-stack adventure tourism marketplace for Maharashtra. Travellers can discover destinations, compare experiences, review pricing and itineraries, and complete a booking with a verified local operator. MahaGetaways owns discovery, booking coordination and traveller support; operators own safety, logistics and on-ground execution.
+## About
+MahaGetaways brings adventure discovery and booking into one place. Instead of searching through scattered social media pages or messaging groups, travellers can browse verified experiences, compare pricing and itineraries, and complete a booking through one platform. MahaGetaways focuses on simplifying discovery and booking, while local operators remain responsible for delivering the on-ground experience.
 
-## Hackathon overview
-
-The project addresses a fragmented adventure-tourism journey: activity details, pricing, operator credibility and booking are often spread across social media and direct messages. MahaGetaways brings that journey into one responsive marketplace.
-
-The current MVP demonstrates:
-
-- Destination and activity discovery across the Sahyadris and Konkan
-- Trekking, camping, rafting, scuba and rock-adventure listings
-- Side-by-side comparison through consistent pricing, duration, difficulty and ratings
-- Detailed itineraries, inclusions, exclusions and cancellation guidance
-- Verified operator profiles and explicit on-ground handoff
-- Saved experiences stored in the browser
-- Booking for groups of up to 20 with international country-code support
-- Server-side input validation, fee calculation and environment-aware demo booking handling
-- A demo-safe payment authorization state that collects no card details
-- Booking references, confirmation summaries and operator next steps
+## Features
+- Browse adventure experiences across Maharashtra
+- Filter by activity or destination
+- View detailed itineraries and trip information
+- Compare pricing
+- Book experiences through a guided booking flow
+- Demo payment and booking confirmation
+- Save favourite experiences
+- Responsive across desktop, tablet and mobile
 
 ## Tech stack
 
@@ -54,12 +49,6 @@ The visual interface lives in `public/` and is rendered by the Next.js page. API
 
 The response includes the booking reference, total amount, platform fee, operator payout, assigned operator and persistence mode.
 
-### Booking persistence by environment
-
-- **Local development:** successful bookings are appended to `data/bookings.json` for convenient demos.
-- **Vercel deployment:** booking persistence is intentionally simulated. The route validates the request, calculates all amounts, creates an `MG-*` reference and returns the complete confirmation without reading or writing booking files.
-
-Vercel serverless functions have an immutable project filesystem, so the deployed MVP never depends on filesystem writes. A production database remains a future roadmap item.
 
 ## Run locally
 
@@ -87,25 +76,17 @@ npm run build
 1. Start on the hero and explain the two-sided marketplace model.
 2. Filter by destination or activity.
 3. Open an experience and show pricing, itinerary, inclusions, exclusions, cancellation guidance and the verified operator.
-4. Select **Check dates & book**.
-5. Change the group size to demonstrate live pricing and the clearly explained 4% platform/support fee.
-6. Complete the traveller form with a valid email and phone number.
-7. Continue to the simulated payment screen and confirm the demo payment.
-8. Show the booking reference, confirmation recap and operator handoff.
-9. Mention the operator summary endpoint as the foundation for a future operator dashboard.
+4. Select **Book**.
+6. Change the group size to demonstrate live pricing and the clearly explained 4% platform fee.
+7. Complete the traveller form with a valid email and phone number.
+8. Continue to the simulated payment screen and confirm the demo payment.
+9. Show the booking reference, confirmation recap and operator handoff.
+10. Mention the operator summary endpoint as the foundation for a future operator dashboard.
 
 When running locally, the booking request writes a demo record to `data/bookings.json`. Clear that file back to `[]` before a fresh judging session if desired. On Vercel, the same flow returns a successful confirmation without persisting the record.
 
-## Trust and marketplace model
 
-- Listings use consistent fields so travellers can compare clearly.
-- Operators are marked verified and display ratings, trip history and hosting tenure.
-- Pricing separates the operator experience price from the 4% platform, coordination and support fee.
-- The UI explains inclusions, exclusions and the MVP cancellation policy before checkout.
-- Confirmation makes the handoff explicit: the operator supplies meeting, packing and final trip details while MahaGetaways remains the booking-support contact.
-- Security headers and payload limits are configured at the application layer.
-
-## Known MVP limitations
+## MVP limitations
 
 - Payment authorization is simulated; no card details are collected or stored.
 - Deployed bookings are confirmation simulations and are not retained after the serverless request completes.
@@ -117,23 +98,13 @@ When running locally, the booking request writes a demo record to `data/bookings
 - The operator summary is an API response, not a full dashboard.
 - Experience availability is illustrative and not backed by live inventory.
 
-## Future roadmap
+## Future Improvements
 
-- PostgreSQL with transactional inventory and durable booking storage
-- Razorpay or Stripe payment intents and signed webhooks
-- Traveller and operator accounts with role-based access
-- Operator onboarding, document checks and listing management
-- Live availability calendars and capacity controls
-- Email, SMS and WhatsApp notifications
-- Cancellation, refund and rescheduling workflows
-- Reviews tied to completed bookings
-- Search expansion across every Maharashtra tourism region
-- Operator analytics and payout dashboards
+- Real payment processing through Stripe
+- Traveller and operator authentication
+- Database and transaction storage
+- Operator dashboard for managing listings and bookings
+- Live availability calendars to manage capacity
+- Email, SMS, and WhatsApp confirmations
+- Verified traveller reviews collected automatically after completed bookings or on-ground experience
 
-## Configuration
-
-Copy `.env.example` to `.env.local` when adding production integrations. Never expose payment-provider secrets to browser code.
-
-## Submission note
-
-This repository intentionally prioritizes a polished, judgeable end-to-end MVP over production infrastructure. The marketplace story, discovery experience, listing transparency, booking flow and operator handoff are implemented; database, authentication and real payment integrations are documented roadmap items.
